@@ -1,8 +1,6 @@
 class Comment():
-    def __init__(self, id, name, breed, status, location_id, customer_id):
+    def __init__(self, id, post_id, author_id, content):
         self.id = id
-        self.name = name
-        self.breed = breed
-        self.status = status
-        self.location_id = location_id
-        self.customer_id = customer_id
+        self.post_id = post_id
+        self.author_id = author_id
+        self.content = content

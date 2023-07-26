@@ -1,15 +1,24 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-
-from views.users import create_user, login_user
+from urllib.parse import urlparse #, parse_qs
+from views import (create_user, login_user, get_all_users, get_single_user,
+get_all_tags,
+get_all_subscriptions,
+get_all_reactions,
+get_all_posts, get_single_post,
+get_all_post_reactions,
+get_all_comments,
+get_all_categories,
+get_all_post_tags)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
-    def parse_url(self):
+    def parse_url(self, path):
         """Parse the url into the resource and id"""
-        path_params = self.path.split('/')
+        parsed_url = urlparse(path)
+        path_params = parsed_url.path.split('/')
         resource = path_params[1]
         if '?' in resource:
             param = resource.split('?')[1]
@@ -44,14 +53,68 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        pass
+        parsed = self.parse_url(self.path)
+
+        response = False
+
+        if '?' not in self.path:
+            # unpack tuple
+            ( resource, id ) = parsed
+
+            if resource == "users":
+                if id is not None:
+                    response = get_single_user(id)
+                else:
+                    response = get_all_users()
+            
+            elif resource == "posts":
+                if id is not None:
+                    response = get_single_post(id)
+                else:
+                    response = get_all_posts()
+
+            elif resource == "comments":
+                response = get_all_comments()           
+            
+            elif resource == "tags":
+                response = get_all_tags() 
+
+            elif resource == "categories":
+                response = get_all_categories()
+
+            elif resource == "subscriptions":
+                response = get_all_subscriptions()  
+                    
+            elif resource == "reactions":
+                response = get_all_reactions() 
+
+            elif resource == "post_reactions":
+                response = get_all_post_reactions() 
+                
+            elif resource == "post_tags":
+                response = get_all_post_tags() 
+                    
+        else:
+            ( resource, key, value ) = parsed
+            pass
+
+        #if response == False:
+         #   self._set_headers(404)
+          #  response = ""
+        #elif response == 405:
+         #   self._set_headers(405)
+          #  response = ""
+        #else: 
+        self._set_headers(200)
+
+        self.wfile.write(json.dumps(response).encode())
 
 
     def do_POST(self):

@@ -140,7 +140,6 @@ INSERT INTO "Posts" VALUES (null, 2, 3, "The trick to finding the best Aldi Find
 INSERT INTO "Posts" VALUES (null, 3, 1, "Zig Zag", "2023-01-29", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fbestanimations.com%2FMusic%2FDancers%2Ffunny-dance%2Ffunny-dance-dancing-animated-gif-image-11.gif&f=1&nofb=1&ipt=85fcee1d7fc28b30309e1e6746cdc2612b52f51e38d7dc25e823f7f118cd7de4&ipo=images", "My smooth moves.", 1);
 
 
-
 INSERT INTO "PostReactions" VALUES (null, 1, 3, 1);
 INSERT INTO "PostReactions" VALUES (null, 2, 5, 2);
 INSERT INTO "PostReactions" VALUES (null, 3, 6, 3);
@@ -151,19 +150,75 @@ INSERT INTO "PostReactions" VALUES (null, 1, 2, 1);
 INSERT INTO "PostReactions" VALUES (null, 7, 1, 2);
 
 
-
-
-
-
-
-
-
-
-
-
-
 INSERT INTO "Comments" VALUES (null, 1, 1, "amazzzzzzzzzzzzzzing!");
 INSERT INTO "Comments" VALUES (null, 2, 2, "this sucks ass!");
 INSERT INTO "Comments" VALUES (null, 3, 3, "severely lacking Kenergy");
 INSERT INTO "Comments" VALUES (null, 1, 4, "so good I wanted to cry");
 INSERT INTO "Comments" VALUES (null, 2, 7, "can't");
+
+SELECT
+    c.id,
+    c.post_id,
+    c.author_id,
+    c.content
+FROM Comments c;
+
+SELECT
+    s.id,
+    s.follower_id,
+    s.author_id,
+    s.created_on
+FROM Subscriptions s;
+
+SELECT
+    u.id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.bio,
+    u.username,
+    u.password,
+    u.profile_image_url,
+    u.created_on,
+    u.active
+FROM Users u;
+
+SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved
+FROM Posts p;
+
+SELECT
+    r.id,
+    r.label,
+    r.image_url
+FROM Reactions r;
+
+SELECT
+    pr.id,
+    pr.user_id,
+    pr.reaction_id,
+    pr.post_id
+FROM PostReactions pr;
+
+SELECT
+    t.id,
+    t.label
+FROM Tags t;
+
+SELECT
+    pt.id,
+    pt.post_id,
+    pt.tag_id
+FROM PostTags pt;
+
+SELECT
+    ct.id,
+    ct.label
+FROM Categories ct;

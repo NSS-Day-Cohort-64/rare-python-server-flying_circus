@@ -1,8 +1,10 @@
-class Comment():
-    def __init__(self, id, name, breed, status, location_id, customer_id):
+class Post():
+    def __init__(self, id, user_id, category_id, title, publication_date, image_url, content, approved):
         self.id = id
-        self.name = name
-        self.breed = breed
-        self.status = status
-        self.location_id = location_id
-        self.customer_id = customer_id
+        self.user_id = user_id
+        self.category_id = category_id
+        self.title = title
+        self.publication_date = publication_date
+        self.image_url = image_url
+        self.content = content
+        self.approved = approved
