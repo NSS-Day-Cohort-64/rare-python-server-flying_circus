@@ -1,7 +1,7 @@
 {
-    "python.formatting.autopep8Path": "/Users/chesneyhardin/.pyenv/shims/autopep8",
-    "python.linting.pylintEnabled": true,
-    "python.analysis.diagnosticSeverityOverrides": {
-      "reportGeneralTypeIssues": "none"
-    }
+   "python.formatting.autopep8Path": "/home/ryanmphill/.pyenv/shims/autopep8",
+   "python.linting.pylintEnabled": true,
+   "python.analysis.diagnosticSeverityOverrides": {
+     "reportGeneralTypeIssues": "none"
+   }
 }
