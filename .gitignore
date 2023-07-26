@@ -153,4 +153,5 @@ cython_debug/
 *.sqlite3
 
 # VS code settings
-settings.json
+.vscode/
+.vscode/settings.json
