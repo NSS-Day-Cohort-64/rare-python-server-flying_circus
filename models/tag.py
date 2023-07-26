@@ -1,8 +1,4 @@
-class Comment():
-    def __init__(self, id, name, breed, status, location_id, customer_id):
+class Tag():
+    def __init__(self, id, label):
         self.id = id
-        self.name = name
-        self.breed = breed
-        self.status = status
-        self.location_id = location_id
-        self.customer_id = customer_id
+        self.label = label
