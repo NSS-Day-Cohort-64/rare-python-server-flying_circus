@@ -126,7 +126,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == 'categories':
             response = create_category(post_body)
         if resource == 'posts':
-            response == create_post(post_body)
+            response = create_post(post_body)
 
         self.wfile.write(response.encode())
 
