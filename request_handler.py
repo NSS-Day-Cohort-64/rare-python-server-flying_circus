@@ -5,7 +5,7 @@ from views import (create_user, login_user, get_all_users, get_single_user,
 get_all_tags,
 get_all_subscriptions,
 get_all_reactions,
-get_all_posts, get_single_post,
+get_all_posts, get_single_post, get_posts_by_category,
 get_all_post_reactions,
 get_all_comments,
 get_all_categories,
@@ -103,6 +103,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         else:
             ( resource, key, value ) = parsed
+            if resource == "posts":
+                if key == "category":
+                    response = get_posts_by_category(value)
             pass
 
         #if response == False:
