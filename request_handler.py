@@ -9,7 +9,7 @@ get_all_posts, get_single_post,
 get_all_post_reactions,
 get_all_comments,
 get_all_categories,
-get_all_post_tags)
+get_all_post_tags, get_posts_by_user)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -20,10 +20,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         parsed_url = urlparse(path)
         path_params = parsed_url.path.split('/')
         resource = path_params[1]
-        if '?' in resource:
-            param = resource.split('?')[1]
-            resource = resource.split('?')[0]
-            pair = param.split('=')
+        if '?' in path:
+            # param = resource.split('?')[1]
+            # resource = resource.split('?')[0]
+            pair = parsed_url.query.split('=')
             key = pair[0]
             value = pair[1]
             return (resource, key, value)
@@ -103,15 +103,9 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         else:
             ( resource, key, value ) = parsed
-            pass
+            if key == 'user' and resource == 'posts':
+                response = get_posts_by_user(value)
 
-        #if response == False:
-        #   self._set_headers(404)
-        #  response = ""
-        #elif response == 405:
-        #   self._set_headers(405)
-        #  response = ""
-        #else: 
         self._set_headers(200)
 
         self.wfile.write(json.dumps(response).encode())
