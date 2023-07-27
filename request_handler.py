@@ -5,7 +5,11 @@ from views import (create_user, login_user, get_all_users, get_single_user,
 get_all_tags,
 get_all_subscriptions,
 get_all_reactions,
+<<<<<<< HEAD
 get_all_posts, get_single_post, create_post,
+=======
+get_all_posts, get_single_post, get_posts_by_category,
+>>>>>>> main
 get_all_post_reactions,
 get_all_comments,
 get_all_categories,
@@ -103,8 +107,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         else:
             ( resource, key, value ) = parsed
-            if key == 'user' and resource == 'posts':
-                response = get_posts_by_user(value)
+            if resource == 'posts':
+                if key == 'user':
+                    response = get_posts_by_user(value)
+                if key == "category":
+                    response = get_posts_by_category(value)
+            
 
         self._set_headers(200)
 
