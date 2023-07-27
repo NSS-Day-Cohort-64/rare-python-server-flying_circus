@@ -15,23 +15,17 @@ def get_all_tags():
         SELECT
             t.id,
             t.label
-
         FROM Tags t
+        ORDER BY label ASC
         """)
 
-        # Initialize an empty list to hold all animal representations
         tags = []
 
         # Convert rows of data into a Python list
         dataset = db_cursor.fetchall()
 
-        # Iterate list of data returned from database
         for row in dataset:
 
-            # Create an animal instance from the current row.
-            # Note that the database fields are specified in
-            # exact order of the parameters defined in the
-            # Animal class above.
             tag = Tag(row['id'], row['label'])
 
             tags.append(tag.__dict__)

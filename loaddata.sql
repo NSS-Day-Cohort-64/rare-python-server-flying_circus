@@ -210,7 +210,8 @@ FROM PostReactions pr;
 SELECT
     t.id,
     t.label
-FROM Tags t;
+FROM Tags t
+  ORDER BY label ASC;
 
 SELECT
     pt.id,

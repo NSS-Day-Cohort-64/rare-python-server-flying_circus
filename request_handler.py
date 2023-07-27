@@ -106,11 +106,11 @@ class HandleRequests(BaseHTTPRequestHandler):
             pass
 
         #if response == False:
-         #   self._set_headers(404)
-          #  response = ""
+        #   self._set_headers(404)
+        #  response = ""
         #elif response == 405:
-         #   self._set_headers(405)
-          #  response = ""
+        #   self._set_headers(405)
+        #  response = ""
         #else: 
         self._set_headers(200)
 
@@ -123,7 +123,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
-        (resource, _) = self.parse_url()
+        (resource, _) = self.parse_url(self.path)
 
         if resource == 'login':
             response = login_user(post_body)
