@@ -87,6 +87,42 @@ def get_single_post(id):
 
     return requested_post
 
+def get_posts_by_user(user_id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+
+        conn.row_factory = sqlite3.Row
+
+        # Create a cursor object to interact with the database
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved
+        FROM Posts p
+        WHERE p.user_id = ?
+        """, ( user_id, ))
+
+        posts = []
+
+        dataset = db_cursor.fetchall()
+
+        # Loop through each row (record) in the 'dataset'
+        for row in dataset:
+            post = Post(row['id'],row['user_id'], 
+                        row['category_id'], row['title'], 
+                        row['publication_date'],row['image_url'], 
+                        row['content'], row['approved'])
+
+            posts.append(post.__dict__)
+    # Return the list of animals at the specified location as dictionaries
+    return posts
 
 def get_posts_by_category(id):
     """Filter posts by category"""

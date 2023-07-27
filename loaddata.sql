@@ -192,7 +192,8 @@ SELECT
     p.image_url,
     p.content,
     p.approved
-FROM Posts p;
+FROM Posts p
+WHERE p.user_id = 2;
 
 SELECT
     r.id,
