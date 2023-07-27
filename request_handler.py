@@ -5,7 +5,7 @@ from views import (create_user, login_user, get_all_users, get_single_user,
 get_all_tags,
 get_all_subscriptions,
 get_all_reactions,
-get_all_posts, get_single_post,
+get_all_posts, get_single_post, create_post,
 get_all_post_reactions,
 get_all_comments,
 get_all_categories,
@@ -121,8 +121,10 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == 'login':
             response = login_user(post_body)
-        if resource == 'register':
+        elif resource == 'register':
             response = create_user(post_body)
+        elif resource == 'posts':
+            response == create_post(post_body)
 
         self.wfile.write(response.encode())
 
