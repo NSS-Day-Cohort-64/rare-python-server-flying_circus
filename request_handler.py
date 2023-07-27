@@ -73,7 +73,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
-            
+
             elif resource == "posts":
                 if id is not None:
                     response = get_single_post(id)
@@ -81,26 +81,26 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_all_posts()
 
             elif resource == "comments":
-                response = get_all_comments()           
-            
+                response = get_all_comments()
+
             elif resource == "tags":
-                response = get_all_tags() 
+                response = get_all_tags()
 
             elif resource == "categories":
                 response = get_all_categories()
 
             elif resource == "subscriptions":
-                response = get_all_subscriptions()  
-                    
+                response = get_all_subscriptions()
+
             elif resource == "reactions":
-                response = get_all_reactions() 
+                response = get_all_reactions()
 
             elif resource == "post_reactions":
-                response = get_all_post_reactions() 
-                
+                response = get_all_post_reactions()
+
             elif resource == "post_tags":
-                response = get_all_post_tags() 
-                    
+                response = get_all_post_tags()
+
         else:
             ( resource, key, value ) = parsed
             pass
