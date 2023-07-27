@@ -73,7 +73,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_single_user(id)
                 else:
                     response = get_all_users()
-            
+
             elif resource == "posts":
                 if id is not None:
                     response = get_single_post(id)
@@ -81,26 +81,26 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_all_posts()
 
             elif resource == "comments":
-                response = get_all_comments()           
-            
+                response = get_all_comments()
+
             elif resource == "tags":
-                response = get_all_tags() 
+                response = get_all_tags()
 
             elif resource == "categories":
                 response = get_all_categories()
 
             elif resource == "subscriptions":
-                response = get_all_subscriptions()  
-                    
+                response = get_all_subscriptions()
+
             elif resource == "reactions":
-                response = get_all_reactions() 
+                response = get_all_reactions()
 
             elif resource == "post_reactions":
-                response = get_all_post_reactions() 
-                
+                response = get_all_post_reactions()
+
             elif resource == "post_tags":
-                response = get_all_post_tags() 
-                    
+                response = get_all_post_tags()
+
         else:
             ( resource, key, value ) = parsed
             pass
@@ -111,7 +111,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         #elif response == 405:
          #   self._set_headers(405)
           #  response = ""
-        #else: 
+        #else:
         self._set_headers(200)
 
         self.wfile.write(json.dumps(response).encode())
@@ -123,7 +123,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
-        (resource, _) = self.parse_url()
+        (resource, _) = self.parse_url(self.path)
 
         if resource == 'login':
             response = login_user(post_body)
