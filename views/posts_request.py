@@ -22,6 +22,7 @@ def get_all_posts():
             p.content,
             p.approved
         FROM Posts p
+        ORDER BY p.publication_date DESC
         """)
 
         # Initialize an empty list to hold all animal representations
