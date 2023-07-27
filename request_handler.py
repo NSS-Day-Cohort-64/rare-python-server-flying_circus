@@ -106,12 +106,12 @@ class HandleRequests(BaseHTTPRequestHandler):
             pass
 
         #if response == False:
-         #   self._set_headers(404)
-          #  response = ""
+        #   self._set_headers(404)
+        #  response = ""
         #elif response == 405:
-         #   self._set_headers(405)
-          #  response = ""
-        #else:
+        #   self._set_headers(405)
+        #  response = ""
+        #else: 
         self._set_headers(200)
 
         self.wfile.write(json.dumps(response).encode())
