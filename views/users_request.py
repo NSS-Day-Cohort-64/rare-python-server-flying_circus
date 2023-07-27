@@ -53,14 +53,15 @@ def create_user(user):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        Insert into Users (first_name, last_name, username, email, password, bio, created_on, active) values (?, ?, ?, ?, ?, ?, ?, 1)
+        Insert into Users (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active) values (?, ?, ?, ?, ?, ?, ?, ?, 1)
         """, (
             user['first_name'],
             user['last_name'],
-            user['username'],
             user['email'],
-            user['password'],
             user['bio'],
+            user['username'],
+            user['password'],
+            user['profile_image_url'],
             datetime.now()
         ))
 
@@ -73,6 +74,7 @@ def create_user(user):
 
 
 def get_all_users():
+    """Retrieve all users"""
     with sqlite3.connect("./db.sqlite3") as conn:
 
         # Just use these. It's a Black Box.
