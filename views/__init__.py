@@ -14,5 +14,4 @@ from .post_reactions_request import get_all_post_reactions
 
 from .comments_request import get_all_comments
 
-from .categories_request import get_all_categories
-
+from .categories_request import get_all_categories, create_category

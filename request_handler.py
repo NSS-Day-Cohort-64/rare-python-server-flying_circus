@@ -9,7 +9,7 @@ get_all_posts, get_single_post, create_post,
 get_all_post_reactions,
 get_all_comments,
 get_all_categories,
-get_all_post_tags, get_posts_by_user)
+get_all_post_tags, get_posts_by_user, create_category)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -121,9 +121,11 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == 'login':
             response = login_user(post_body)
-        elif resource == 'register':
+        if resource == 'register':
             response = create_user(post_body)
-        elif resource == 'posts':
+        if resource == 'categories':
+            response = create_category(post_body)
+        if resource == 'posts':
             response == create_post(post_body)
 
         self.wfile.write(response.encode())

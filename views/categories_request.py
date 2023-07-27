@@ -1,9 +1,9 @@
 import sqlite3
 import json
-from datetime import datetime
 from models import Category
 
 def get_all_categories():
+    """get categories"""
     with sqlite3.connect("./db.sqlite3") as conn:
 
         # Just use these. It's a Black Box.
@@ -37,29 +37,19 @@ def get_all_categories():
 
     return categories
 
-def create_category(category):
-    """Adds a user to the database when they register
-
-    Args:
-        user (dictionary): The dictionary passed to the register post request
-
-    Returns:
-        json string: Contains the token of the newly created user
-    """
+def create_category(new_category):
+    """Adds a category to the database"""
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         Insert into Categories (label) values (?)
-        """, (
-            category['label'],
-            datetime.now()
-        ))
+        """, (new_category['label'],))
 
+        #  return the primary key of the last thing that got added to
+        #  the database.
         id = db_cursor.lastrowid
+        new_category['id'] = id
 
-        return json.dumps({
-            'token': id,
-            'valid': True
-        })
+        return json.dumps(new_category)
