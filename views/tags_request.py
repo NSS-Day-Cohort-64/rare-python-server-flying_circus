@@ -1,6 +1,5 @@
 import sqlite3
 import json
-from datetime import datetime
 from models import Tag
 
 def get_all_tags():
