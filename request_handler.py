@@ -9,7 +9,7 @@ get_all_posts, get_single_post, get_posts_by_category, create_post,
 get_all_post_reactions,
 get_all_comments,
 get_all_categories,
-get_all_post_tags, get_posts_by_user, create_category, delete_post)
+get_all_post_tags, get_posts_by_user, create_category, delete_post, update_post)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -160,8 +160,25 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write(response.encode())
 
     def do_PUT(self):
-        """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+    # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+        success = False
+
+        if resource == "posts":
+            success = update_post(id, post_body)
+        
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+
+        self.wfile.write("".encode())
+     
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
