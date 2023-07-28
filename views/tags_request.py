@@ -30,3 +30,20 @@ def get_all_tags():
             tags.append(tag.__dict__)
 
     return tags
+
+def create_tag(new_tag):
+    """Adds a tag to the database"""
+    with sqlite3.connect('./db.sqlite3') as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        Insert into Tags (label) values (?)
+        """, (new_tag['label'],))
+
+        #  return the primary key of the last thing that got added to
+        #  the database.
+        id = db_cursor.lastrowid
+        new_tag['id'] = id
+
+        return json.dumps(new_tag)
