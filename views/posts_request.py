@@ -113,7 +113,15 @@ def create_post(new_post):
 
     return json.dumps(new_post)
 
- 
+def delete_post(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Posts
+        WHERE id = ?
+        """, (id, ))
+
 def get_posts_by_user(user_id):
     with sqlite3.connect("./db.sqlite3") as conn:
 
