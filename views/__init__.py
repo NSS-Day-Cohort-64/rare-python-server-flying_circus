@@ -6,11 +6,7 @@ from .subscriptions_request import get_all_subscriptions
 
 from .reactions_request import get_all_reactions
 
-<<<<<<< HEAD
-from .posts_request import get_all_posts, get_single_post, get_posts_by_user, create_post
-=======
-from .posts_request import get_all_posts, get_single_post, get_posts_by_user, get_posts_by_category
->>>>>>> main
+from .posts_request import get_all_posts, get_single_post, get_posts_by_user, get_posts_by_category, create_post
 
 from .post_tags_request import get_all_post_tags
 
