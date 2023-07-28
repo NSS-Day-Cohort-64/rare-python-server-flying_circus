@@ -1,6 +1,6 @@
 from .users_request import create_user, login_user, get_all_users, get_single_user
 
-from .tags_request import get_all_tags
+from .tags_request import get_all_tags, create_tag
 
 from .subscriptions_request import get_all_subscriptions
 
