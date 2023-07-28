@@ -138,6 +138,7 @@ eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dic
 quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.", 1);
 INSERT INTO "Posts" VALUES (null, 2, 3, "The trick to finding the best Aldi Finds that Aldi doesn't want you to find out about!", "2023-01-12", "", "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.", 1);
 INSERT INTO "Posts" VALUES (null, 3, 1, "Zig Zag", "2023-01-29", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fbestanimations.com%2FMusic%2FDancers%2Ffunny-dance%2Ffunny-dance-dancing-animated-gif-image-11.gif&f=1&nofb=1&ipt=85fcee1d7fc28b30309e1e6746cdc2612b52f51e38d7dc25e823f7f118cd7de4&ipo=images", "My smooth moves.", 1);
+INSERT INTO "Posts" VALUES (null, 5, 4, "JonathanDumboFod", "1903-66-06", "https://www.refinery29.com/images/11419423.jpg?format=webp&width=720&height=864&quality=85", "I looked like Zuko during my headshot.", 1);
 
 
 INSERT INTO "PostReactions" VALUES (null, 1, 3, 1);
