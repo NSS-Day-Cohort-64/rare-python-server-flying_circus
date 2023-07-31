@@ -218,8 +218,8 @@ def get_posts_by_title(title):
             p.content,
             p.approved
         FROM Posts p
-        WHERE p.title = ?
-        """, ( title, ))
+        WHERE p.title LIKE ?
+        """, ('%' + title + '%', ))
 
         posts = []
 
