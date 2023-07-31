@@ -5,11 +5,12 @@ from views import (create_user, login_user, get_all_users, get_single_user,
 get_all_tags, create_tag,
 get_all_subscriptions,
 get_all_reactions,
-get_all_posts, get_single_post, get_posts_by_category, create_post,
+get_all_posts, get_single_post, get_posts_by_category, get_posts_by_title, get_posts_by_tag, create_post,
 get_all_post_reactions,
 get_all_comments,
 get_all_categories,
-get_all_post_tags, get_posts_by_user, create_category, delete_post, update_post, create_subscription, get_single_subscription, get_homepage_content)
+get_all_post_tags, get_posts_by_user, create_category, delete_post, update_post,
+create_subscription, create_multiple_post_tags, get_single_subscription, get_homepage_content)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -123,6 +124,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_posts_by_user(query['user'][0])
                 elif query.get('category'):
                     response = get_posts_by_category(query['category'][0])
+                elif query.get('title'):
+                    response = get_posts_by_title(query['title'][0])
+                elif query.get('tag'):
+                    response = get_posts_by_tag(query['tag'][0])
+                
 
         self._set_headers(200)
         self.wfile.write(json.dumps(response).encode())
@@ -130,7 +136,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_POST(self):
         """Make a post request to the server"""
-        self._set_headers(201)
+        status_code = 201
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
         response = ''
@@ -145,9 +151,24 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == 'posts':
             response = create_post(post_body)
         if resource == 'tags':
-            response = create_tag(post_body) 
+            response = create_tag(post_body)
+        if resource == 'post_tags':
+            if (
+                isinstance(post_body, list)
+                and len(post_body) == 2
+                and isinstance(post_body[0], int)
+                and isinstance(post_body[1], list)
+            ):
+                response = create_multiple_post_tags(post_body)
+            else:
+                status_code = 400
+                response = json.dumps({
+                    "required_format": ["post_id", ["tag_id_1", "tag_id_2", "etc"]]
+                    })
         elif resource == 'subscriptions':
             response = create_subscription(post_body)
+
+        self._set_headers(status_code)
 
         self.wfile.write(response.encode())
 
