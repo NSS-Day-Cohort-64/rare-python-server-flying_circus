@@ -241,4 +241,4 @@ FROM Categories ct;
   FROM PostTags pt 
   Join Posts p, Tags t
   On pt.post_id = p.id AND pt.tag_id = t.id
-  WHERE t.id = 2
+  WHERE t.id = 3
