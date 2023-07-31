@@ -5,7 +5,7 @@ from views import (create_user, login_user, get_all_users, get_single_user,
 get_all_tags, create_tag,
 get_all_subscriptions,
 get_all_reactions,
-get_all_posts, get_single_post, get_posts_by_category, create_post,
+get_all_posts, get_single_post, get_posts_by_category, get_posts_by_title, create_post,
 get_all_post_reactions,
 get_all_comments,
 get_all_categories,
@@ -125,6 +125,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_posts_by_user(query['user'][0])
                 elif query.get('category'):
                     response = get_posts_by_category(query['category'][0])
+                elif query.get('title'):
+                    response = get_posts_by_title(query['title'][0])
                     
             # ( resource, key, value ) = parsed
             # if resource == 'posts':
