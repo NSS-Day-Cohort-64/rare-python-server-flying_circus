@@ -161,7 +161,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_tag(post_body)
         if resource == 'post_tags':
             if (
-                len(post_body) == 2
+                isinstance(post_body, list)
+                and len(post_body) == 2
                 and isinstance(post_body[0], int)
                 and isinstance(post_body[1], list)
             ):
