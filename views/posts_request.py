@@ -199,6 +199,85 @@ def get_posts_by_category(id):
     return posts
 
 
+def get_posts_by_title(title):
+    with sqlite3.connect("./db.sqlite3") as conn:
+
+        conn.row_factory = sqlite3.Row
+
+        # Create a cursor object to interact with the database
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved
+        FROM Posts p
+        WHERE p.title LIKE ?
+        """, ('%' + title + '%', ))
+
+        posts = []
+
+        dataset = db_cursor.fetchall()
+
+        # Loop through each row (record) in the 'dataset'
+        for row in dataset:
+            post = Post(row['id'],row['user_id'], 
+                        row['category_id'], row['title'], 
+                        row['publication_date'],row['image_url'], 
+                        row['content'], row['approved'])
+
+            posts.append(post.__dict__)
+    # Return the list of animals at the specified location as dictionaries
+    return posts
+
+def get_posts_by_tag(tag_id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+
+        conn.row_factory = sqlite3.Row
+
+        # Create a cursor object to interact with the database
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved,
+            pt.tag_id, 
+            t.label,
+            t.id             
+        FROM PostTags pt 
+        Join Posts p, Tags t
+        On pt.post_id = p.id AND pt.tag_id = t.id
+        WHERE t.id = ?
+        """, ( tag_id, ))
+
+        posts = []
+
+        dataset = db_cursor.fetchall()
+
+        # Loop through each row (record) in the 'dataset'
+        for row in dataset:
+            post = Post(row['id'],row['user_id'], 
+                        row['category_id'], row['title'], 
+                        row['publication_date'],row['image_url'], 
+                        row['content'], row['approved'])
+
+            posts.append(post.__dict__)
+    # Return the list of animals at the specified location as dictionaries
+    return posts
+
 def update_post(id, new_post):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()

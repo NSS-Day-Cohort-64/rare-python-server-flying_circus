@@ -246,3 +246,21 @@ SELECT
     ct.id,
     ct.label
 FROM Categories ct;
+
+
+ SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved,
+    pt.tag_id, 
+    t.label,
+    t.id             
+  FROM PostTags pt 
+  Join Posts p, Tags t
+  On pt.post_id = p.id AND pt.tag_id = t.id
+  WHERE t.id = 2
