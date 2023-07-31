@@ -9,30 +9,11 @@ get_all_posts, get_single_post, get_posts_by_category, create_post,
 get_all_post_reactions,
 get_all_comments,
 get_all_categories,
-get_all_post_tags, get_posts_by_user, create_category, delete_post, update_post, create_subscription)
+get_all_post_tags, get_posts_by_user, create_category, delete_post, update_post, create_subscription, get_single_subscription, get_homepage_content)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
-    # def parse_url(self, path):
-    #     """Parse the url into the resource and id"""
-    #     parsed_url = urlparse(path)
-    #     path_params = parsed_url.path.split('/')
-    #     resource = path_params[1]
-    #     if '?' in path:
-    #         # param = resource.split('?')[1]
-    #         # resource = resource.split('?')[0]
-    #         pair = parsed_url.query.split('=')
-    #         key = pair[0]
-    #         value = pair[1]
-    #         return (resource, key, value)
-    #     else:
-    #         id = None
-    #         try:
-    #             id = int(path_params[2])
-    #         except (IndexError, ValueError):
-    #             pass
-    #         return (resource, id)
     
     def parse_url(self, path):
         """Parse the url into the resource and id"""
@@ -77,8 +58,7 @@ class HandleRequests(BaseHTTPRequestHandler):
     def do_GET(self):
         """Handle Get requests to the server"""
         parsed = self.parse_url(self.path)
-
-        response = False
+        response = None
 
         if '?' not in self.path:
             # unpack tuple
@@ -106,7 +86,10 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_all_categories()
 
             elif resource == "subscriptions":
-                response = get_all_subscriptions()
+                if id is not None:
+                    response = get_single_subscription(id)
+                else:
+                    response = get_all_subscriptions()
 
             elif resource == "reactions":
                 response = get_all_reactions()
@@ -116,6 +99,21 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             elif resource == "post_tags":
                 response = get_all_post_tags()
+                
+            elif resource == "":
+                follower_id = None
+
+                # Extract the follower ID from the Authorization header
+                auth_header = self.headers.get('Authorization')
+                
+                if auth_header:
+                    follower_id = int(auth_header.strip())  # Assuming the Authorization header contains the follower ID as an integer
+                
+                if follower_id is not None:
+                    response = get_homepage_content(follower_id)
+                    
+                else:
+                    response = "Subscribe to authors to curate your personal homepage"
 
         else:
             ( resource, query ) = parsed
@@ -125,16 +123,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_posts_by_user(query['user'][0])
                 elif query.get('category'):
                     response = get_posts_by_category(query['category'][0])
-                    
-            # ( resource, key, value ) = parsed
-            # if resource == 'posts':
-            #     if key == 'user':
-            #         response = get_posts_by_user(value)
-            #     if key == "category":
-            #         response = get_posts_by_category(value)
 
         self._set_headers(200)
-
         self.wfile.write(json.dumps(response).encode())
 
 
