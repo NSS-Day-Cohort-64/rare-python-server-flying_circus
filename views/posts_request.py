@@ -20,15 +20,8 @@ def get_all_posts():
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved,
-            pt.tag_id, 
-            pt.post_id,
-            pt.id,              
-            t.label,
-            t.id             
-        FROM PostTags pt 
-        Join Posts p, Tags t
-        On pt.post_id = p.id AND pt.tag_id = t.id
+            p.approved          
+        FROM Posts p
         ORDER BY p.publication_date DESC
         """)
 
@@ -50,10 +43,6 @@ def get_all_posts():
                         row['publication_date'],row['image_url'], 
                         row['content'], row['approved'])
 
-            tag = Tag(row['id'], row['label'])
-            post_tag = PostTag(row['id'], row['post_id'],row['tag_id'])
-            post.tag = tag.__dict__
-            post.post_tag = post_tag.__dict__ 
 
             posts.append(post.__dict__)
 
