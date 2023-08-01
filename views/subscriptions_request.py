@@ -66,45 +66,6 @@ def get_single_subscription(id):
 
     return requested_subscription
 
-# def get_homepage_content(follower_id):
-#     with sqlite3.connect("./db.sqlite3") as conn:
-#         conn.row_factory = sqlite3.Row
-#         db_cursor = conn.cursor()
-
-#         # Get posts from subscribed authors if user_id is provided
-#         if follower_id:
-#             db_cursor.execute("""
-#             SELECT
-#                 p.id,
-#                 u.username,
-#                 p.image_url,
-#                 p.publication_date,
-#                 p.title,
-#                 ct.label
-#             FROM Subscriptions s
-#             JOIN Posts p ON p.user_id = s.author_id
-#             JOIN Users u ON p.user_id = u.id
-#             JOIN Categories ct ON p.category_id = ct.id
-#             WHERE s.follower_id = ?
-#             """, (follower_id,))
-
-#         dataset = db_cursor.fetchall()
-
-#         # Convert rows of data into a Python list of dictionaries
-#         homepage_content = []
-#         for row in dataset:
-#             subscription_data = {
-#                 'id': row['id'],
-#                 'author_username': row['username'],
-#                 'image_url': row['image_url'],
-#                 'publication_date': row['publication_date'],
-#                 'title': row['title'],
-#                 'category_label': row['label']
-#             }
-#             homepage_content.append(subscription_data)
-
-#     return homepage_content
-
 def get_homepage_content(follower_id):
     with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
