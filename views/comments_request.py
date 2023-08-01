@@ -1,7 +1,7 @@
 import sqlite3
 import json
 from datetime import datetime
-from models import Comment
+from models import Comment, User
 
 def get_all_comments():
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -67,3 +67,47 @@ def create_comment(comment):
             'token': id,
             'valid': True
         })
+
+def get_comments_by_post(post_id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT 
+            c.id,
+            c.post_id,
+            c.author_id,
+            c.content,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
+        FROM Comments c
+        JOIN Users u 
+        ON u.id = c.author_id
+        WHERE c.post_id = ?
+        """, (post_id, ))
+
+        comments = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            comment = Comment(row['id'], row['post_id'], 
+                            row['author_id'], row['content'])
+            user = User(row['author_id'], row['first_name'], row['last_name'], 
+                        row['email'], row['bio'], row['username'], row['password'],
+                        row['profile_image_url'], row['created_on'], row['active'])
+
+            comment.user = user.__dict__
+
+            comments.append(comment.__dict__)
+        
+        return comments
