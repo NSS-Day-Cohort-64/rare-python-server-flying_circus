@@ -10,7 +10,8 @@ get_all_post_reactions,
 get_all_comments,
 get_all_categories,
 get_all_post_tags, get_posts_by_user, create_category, delete_post, update_post,
-create_subscription, create_multiple_post_tags, delete_multiple_post_tags)
+create_subscription, create_multiple_post_tags,
+delete_multiple_post_tags, get_post_tags_for_single_post)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -130,7 +131,9 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_posts_by_title(query['title'][0])
                 elif query.get('tag'):
                     response = get_posts_by_tag(query['tag'][0])
-                
+            if resource == 'post_tags':
+                if query.get('post'):
+                    response = get_post_tags_for_single_post(query['post'][0])
                     
             # ( resource, key, value ) = parsed
             # if resource == 'posts':
