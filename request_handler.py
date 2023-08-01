@@ -10,7 +10,7 @@ get_all_post_reactions,
 get_all_comments,
 get_all_categories,
 get_all_post_tags, get_posts_by_user, create_category, delete_post, update_post,
-create_subscription, create_multiple_post_tags)
+create_subscription, create_multiple_post_tags, delete_multiple_post_tags)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -205,12 +205,18 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        self._set_headers(204)
+        content_len = int(self.headers.get('content-length', 0))
+        delete_body = json.loads(self.rfile.read(content_len))
+
+        status_code = 204
         (resource, id) = self.parse_url(self.path)
 
         if resource == "posts":
             delete_post(id)
+        if resource == "post_tags":
+            delete_multiple_post_tags(delete_body)
 
+        self._set_headers(status_code)
         self.wfile.write("".encode())
 
 def main():

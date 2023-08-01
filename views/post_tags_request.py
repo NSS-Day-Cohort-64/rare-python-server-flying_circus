@@ -65,3 +65,29 @@ def create_multiple_post_tags(post_body):
             posted_tag_relationships.append(new_post_tag)
 
         return json.dumps(posted_tag_relationships)
+
+def delete_multiple_post_tags(id_list):
+    """Delete post-tag relationships from database when editing post"""
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+        rows_affected = 0
+
+        for single_id in id_list:
+            db_cursor.execute("""
+            DELETE FROM PostTags
+            WHERE id = ?
+            """, (single_id, ))
+
+            # Were any rows affected?
+            # Did the client send an `id` that exists?
+            rows_affected += db_cursor.rowcount
+
+    result = False
+
+    print("rows affected", rows_affected)
+
+    if rows_affected != 0:
+        # Forces 404 response by main module
+        result = True
+
+    return result
