@@ -1,7 +1,7 @@
 import sqlite3
 import json
 from datetime import datetime
-from models import Post, Tag
+from models import Post, Tag, PostTag
 
 def get_all_posts():
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -22,6 +22,8 @@ def get_all_posts():
             p.content,
             p.approved,
             pt.tag_id, 
+            pt.post_id,
+            pt.id,              
             t.label,
             t.id             
         FROM PostTags pt 
@@ -48,10 +50,11 @@ def get_all_posts():
                         row['publication_date'],row['image_url'], 
                         row['content'], row['approved'])
 
-            tag = Tag(row['tag_id'], row['label'])
-
+            tag = Tag(row['id'], row['label'])
+            post_tag = PostTag(row['id'], row['post_id'],row['tag_id'])
             post.tag = tag.__dict__
-            
+            post.post_tag = post_tag.__dict__ 
+
             posts.append(post.__dict__)
 
     return posts

@@ -9,4 +9,5 @@ class Post():
         self.content = content
         self.approved = approved
         self.tag = None
+        self.post_tag = None
      
