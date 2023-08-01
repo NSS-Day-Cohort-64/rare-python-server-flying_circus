@@ -13,6 +13,6 @@ from .post_tags_request import (get_all_post_tags, create_multiple_post_tags,
 
 from .post_reactions_request import get_all_post_reactions
 
-from .comments_request import get_all_comments
+from .comments_request import get_all_comments, get_comments_by_post, create_comment
 
 from .categories_request import get_all_categories, create_category
