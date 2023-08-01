@@ -76,6 +76,7 @@ def get_homepage_content(follower_id):
             db_cursor.execute("""
             SELECT DISTINCT
                 p.id,
+                s.author_id,
                 u.username AS author_username,
                 p.image_url,
                 p.publication_date,
@@ -94,6 +95,7 @@ def get_homepage_content(follower_id):
         for row in dataset:
             subscription_data = {
                 'id': row['id'],
+                'author_id': row['author_id'],
                 'author_username': row['author_username'],
                 'image_url': row['image_url'],
                 'publication_date': row['publication_date'],
@@ -131,3 +133,11 @@ def create_subscription(new_subscription):
         return json.dumps(new_subscription)
 
 
+def delete_subscription(id):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Subscriptions
+        WHERE id = ?
+        """, (id, ))

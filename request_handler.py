@@ -3,7 +3,7 @@ import json
 from urllib.parse import urlparse, parse_qs
 from views import (create_user, login_user, get_all_users, get_single_user,
 get_all_tags, create_tag,
-get_all_subscriptions,
+get_all_subscriptions, delete_subscription,
 get_all_reactions,
 get_all_posts, get_single_post, get_posts_by_category, get_posts_by_title, get_posts_by_tag, create_post,
 get_all_post_reactions,
@@ -224,6 +224,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_post(id)
         if resource == "comments":
             delete_comment(id)
+        if resource == "subscriptions":
+            delete_subscription(id)
         if resource == "post_tags+bulk_delete":
             if (
                 delete_body is not None
