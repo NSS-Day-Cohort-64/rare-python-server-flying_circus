@@ -205,19 +205,35 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
+        delete_body = None
         content_len = int(self.headers.get('content-length', 0))
-        delete_body = json.loads(self.rfile.read(content_len))
+        if content_len > 0:
+            delete_body = json.loads(self.rfile.read(content_len))
 
         status_code = 204
+        response = ""
         (resource, id) = self.parse_url(self.path)
 
         if resource == "posts":
             delete_post(id)
-        if resource == "post_tags":
-            delete_multiple_post_tags(delete_body)
+        if resource == "post_tags+bulk_delete":
+            if (
+                delete_body is not None
+                and isinstance(delete_body, list)
+                and len(delete_body) > 0
+                and isinstance(delete_body[0], int)
+            ):
+                delete_multiple_post_tags(delete_body)
+            else:
+                status_code = 400
+                response = json.dumps({
+                    "error - bad request": """To  perform a bulk delete operation of post_tags, 
+                    please provide an array of the primary keys you would like to delete""",
+                    "example": [8, 9, 10]
+                    })
 
         self._set_headers(status_code)
-        self.wfile.write("".encode())
+        self.wfile.write(response.encode())
 
 def main():
     """Starts the server on port 8088 using the HandleRequests class
