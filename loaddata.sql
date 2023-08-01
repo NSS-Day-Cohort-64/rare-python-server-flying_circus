@@ -131,6 +131,9 @@ INSERT INTO "Subscriptions" VALUES (null, 3, 7, "2023-03-09");
 INSERT INTO "Subscriptions" VALUES (null, 4, 5, "2013-03-07");
 INSERT INTO "Subscriptions" VALUES (null, 5, 3, "2021-01-04");
 INSERT INTO "Subscriptions" VALUES (null, 6, 8, "2021-01-04");
+INSERT INTO "Subscriptions" VALUES (null, 5, 2, "2001-01-04");
+INSERT INTO "Subscriptions" VALUES (null, 2, 3, "2005-02-04");
+INSERT INTO "Subscriptions" VALUES (null, 6, 1, "1901-06-04");
 
 
 INSERT INTO "Posts" VALUES (null, 1, 2, "How to turn your living room into a ball pit", "2022-12-29", "",
@@ -140,6 +143,11 @@ quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dol
 INSERT INTO "Posts" VALUES (null, 2, 3, "The trick to finding the best Aldi Finds that Aldi doesn't want you to find out about!", "2023-01-12", "", "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.", 1);
 INSERT INTO "Posts" VALUES (null, 3, 1, "Zig Zag", "2023-01-29", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fbestanimations.com%2FMusic%2FDancers%2Ffunny-dance%2Ffunny-dance-dancing-animated-gif-image-11.gif&f=1&nofb=1&ipt=85fcee1d7fc28b30309e1e6746cdc2612b52f51e38d7dc25e823f7f118cd7de4&ipo=images", "My smooth moves.", 1);
 INSERT INTO "Posts" VALUES (null, 5, 4, "JonathanDumboFod", "1903-66-06", "https://www.refinery29.com/images/11419423.jpg?format=webp&width=720&height=864&quality=85", "I looked like Zuko during my headshot.", 1);
+INSERT INTO "Posts" VALUES (null, 6, 1, "webegg", "1943-66-06", "https://www.refinery29.com/images/11419423.jpg?format=webp&width=720&height=864&quality=85", "I eggman yo.", 1);
+INSERT INTO "Posts" VALUES (null, 6, 3, "wteeee", "1013-66-06", "https://www.refinery29.com/images/11419423.jpg?format=webp&width=720&height=864&quality=85", "I yo.", 1);
+INSERT INTO "Posts" VALUES (null, 7, 5, "peggg", "2003-06-06", "https://www.refinery29.com/images/11419423.jpg?format=webp&width=720&height=864&quality=85", "I peg yo.", 1);
+INSERT INTO "Posts" VALUES (null, 1, 3, "How to turn into a ball pit", "2020-12-29", "",
+"Sed ut perspi.", 1);
 
 
 INSERT INTO "PostReactions" VALUES (null, 1, 3, 1);
@@ -159,6 +167,79 @@ INSERT INTO "Comments" VALUES (null, 1, 4, "so good I wanted to cry");
 INSERT INTO "Comments" VALUES (null, 2, 7, "can't");
 
 INSERT INTO "PostTags" VALUES (null, 2, 1);
+
+DELETE FROM Subscriptions WHERE id = 14;
+
+
+SELECT DISTINCT
+    p.id,
+    u.username AS author_username,
+    p.image_url,
+    p.publication_date,
+    p.title,
+    ct.label AS category_label
+FROM Subscriptions s
+JOIN Users u ON s.author_id = u.id
+JOIN Posts p ON u.id = p.user_id
+JOIN Categories ct ON p.category_id = ct.id
+WHERE s.follower_id = 2
+
+SELECT DISTINCT
+     s.follower_id, 
+     s.author_id,
+     p.category_id, 
+     p.title,
+     p.publication_date,
+     p.image_url,
+     p.content,
+     p.approved
+FROM Subscriptions s
+JOIN Posts p ON p.user_id = s.author_id
+WHERE s.follower_id = 2;
+
+SELECT
+    p.id,
+    p.user_id,
+    p.category_id,
+    p.title,
+    p.publication_date,
+    p.image_url,
+    p.content,
+    p.approved
+FROM Posts p
+JOIN Subscriptions s ON p.user_id = s.author_id
+WHERE s.follower_id = 2
+
+SELECT
+    u.id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.bio,
+    u.username,
+    u.password,
+    u.profile_image_url,
+    u.created_on,
+    u.active,
+    s.follower_id
+FROM Users u
+LEFT JOIN Subscriptions s ON u.id = s.author_id
+WHERE u.id = 5;
+
+SELECT
+    p.id,
+    s.follower_id,
+    u.username,
+    p.image_url,
+    p.publication_date,
+    p.title,
+    ct.label
+FROM Subscriptions s
+JOIN Posts p ON p.user_id = s.author_id
+JOIN Users u ON p.user_id = u.id
+JOIN Categories ct ON p.category_id = ct.id
+WHERE s.follower_id = 5
+
 
 SELECT
     c.id,
