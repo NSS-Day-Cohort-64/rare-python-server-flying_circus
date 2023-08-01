@@ -7,7 +7,7 @@ get_all_subscriptions,
 get_all_reactions,
 get_all_posts, get_single_post, get_posts_by_category, get_posts_by_title, get_posts_by_tag, create_post,
 get_all_post_reactions,
-get_all_comments, get_comments_by_post,
+get_all_comments, get_comments_by_post, create_comment,
 get_all_categories,
 get_all_post_tags, get_posts_by_user, create_category, delete_post, update_post,
 create_subscription, create_multiple_post_tags)
@@ -181,6 +181,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     })
         elif resource == 'subscriptions':
             response = create_subscription(post_body)
+        elif resource == 'comments':
+            response = create_comment(post_body)
 
         self._set_headers(status_code)
 
