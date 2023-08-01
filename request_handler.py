@@ -43,6 +43,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header('Content-type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+        self.send_header('Access-Control-Allow-Headers', 'Authorization, Content-Type')
         self.end_headers()
 
     def do_OPTIONS(self):
@@ -53,7 +55,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods',
                         'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                        'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Authorization, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -104,17 +106,15 @@ class HandleRequests(BaseHTTPRequestHandler):
             elif resource == "":
                 follower_id = None
 
-                # Extract the follower ID from the Authorization header
-                auth_header = self.headers.get('Authorization')
+                # Extract the follower ID from the Authorization header. DO NOT CHANGE token
+                token = self.headers.get('Authorization')
                 
-                if auth_header:
-                    follower_id = int(auth_header.strip())  # Assuming the Authorization header contains the follower ID as an integer
+                if token:
+                    follower_id = int(token.strip())  # Assuming the Authorization header contains the follower ID as an integer
                 
                 if follower_id is not None:
                     response = get_homepage_content(follower_id)
-                    
-                else:
-                    response = "Subscribe to authors to curate your personal homepage"
+
 
         else:
             ( resource, query ) = parsed

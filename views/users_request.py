@@ -119,6 +119,7 @@ def get_all_users():
 
     return users
 
+
 def get_single_user(id):
     """Get single item"""
     with sqlite3.connect("./db.sqlite3") as conn:

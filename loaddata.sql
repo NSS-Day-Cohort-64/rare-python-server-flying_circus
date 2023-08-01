@@ -165,6 +165,35 @@ INSERT INTO "Comments" VALUES (null, 3, 3, "severely lacking Kenergy");
 INSERT INTO "Comments" VALUES (null, 1, 4, "so good I wanted to cry");
 INSERT INTO "Comments" VALUES (null, 2, 7, "can't");
 
+DELETE FROM Subscriptions WHERE id = 14;
+
+
+SELECT DISTINCT
+    p.id,
+    u.username AS author_username,
+    p.image_url,
+    p.publication_date,
+    p.title,
+    ct.label AS category_label
+FROM Subscriptions s
+JOIN Users u ON s.author_id = u.id
+JOIN Posts p ON u.id = p.user_id
+JOIN Categories ct ON p.category_id = ct.id
+WHERE s.follower_id = 2
+
+SELECT DISTINCT
+     s.follower_id, 
+     s.author_id,
+     p.category_id, 
+     p.title,
+     p.publication_date,
+     p.image_url,
+     p.content,
+     p.approved
+FROM Subscriptions s
+JOIN Posts p ON p.user_id = s.author_id
+WHERE s.follower_id = 2;
+
 SELECT
     p.id,
     p.user_id,
@@ -177,6 +206,36 @@ SELECT
 FROM Posts p
 JOIN Subscriptions s ON p.user_id = s.author_id
 WHERE s.follower_id = 2
+
+SELECT
+    u.id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.bio,
+    u.username,
+    u.password,
+    u.profile_image_url,
+    u.created_on,
+    u.active,
+    s.follower_id
+FROM Users u
+LEFT JOIN Subscriptions s ON u.id = s.author_id
+WHERE u.id = 5;
+
+SELECT
+    p.id,
+    s.follower_id,
+    u.username,
+    p.image_url,
+    p.publication_date,
+    p.title,
+    ct.label
+FROM Subscriptions s
+JOIN Posts p ON p.user_id = s.author_id
+JOIN Users u ON p.user_id = u.id
+JOIN Categories ct ON p.category_id = ct.id
+WHERE s.follower_id = 5
 
 
 SELECT

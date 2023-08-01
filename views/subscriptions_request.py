@@ -66,46 +66,88 @@ def get_single_subscription(id):
 
     return requested_subscription
 
+# def get_homepage_content(follower_id):
+#     with sqlite3.connect("./db.sqlite3") as conn:
+#         conn.row_factory = sqlite3.Row
+#         db_cursor = conn.cursor()
+
+#         # Get posts from subscribed authors if user_id is provided
+#         if follower_id:
+#             db_cursor.execute("""
+#             SELECT
+#                 p.id,
+#                 u.username,
+#                 p.image_url,
+#                 p.publication_date,
+#                 p.title,
+#                 ct.label
+#             FROM Subscriptions s
+#             JOIN Posts p ON p.user_id = s.author_id
+#             JOIN Users u ON p.user_id = u.id
+#             JOIN Categories ct ON p.category_id = ct.id
+#             WHERE s.follower_id = ?
+#             """, (follower_id,))
+
+#         dataset = db_cursor.fetchall()
+
+#         # Convert rows of data into a Python list of dictionaries
+#         homepage_content = []
+#         for row in dataset:
+#             subscription_data = {
+#                 'id': row['id'],
+#                 'author_username': row['username'],
+#                 'image_url': row['image_url'],
+#                 'publication_date': row['publication_date'],
+#                 'title': row['title'],
+#                 'category_label': row['label']
+#             }
+#             homepage_content.append(subscription_data)
+
+#     return homepage_content
+
 def get_homepage_content(follower_id):
     with sqlite3.connect("./db.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
-        # Get posts from subscribed authors if user_id is provided
+        # Get posts from subscribed authors if follower_id is provided
         if follower_id:
             db_cursor.execute("""
-            SELECT
-                s.id,
-                s.follower_id,
-                u.username,
+            SELECT DISTINCT
+                p.id,
+                u.username AS author_username,
                 p.image_url,
                 p.publication_date,
                 p.title,
-                ct.label
+                ct.label AS category_label
             FROM Subscriptions s
-            JOIN Posts p ON p.user_id = s.author_id, Users u ON p.user_id = u.id, Categories ct ON p.category_id = ct.id
+            JOIN Users u ON s.author_id = u.id
+            JOIN Posts p ON u.id = p.user_id
+            JOIN Categories ct ON p.category_id = ct.id
             WHERE s.follower_id = ?
             """, (follower_id,))
 
         dataset = db_cursor.fetchall()
 
-        # Convert rows of data into a Python list of dictionaries
         homepage_content = []
         for row in dataset:
             subscription_data = {
                 'id': row['id'],
-                'follower_id': row['follower_id'],
-                'author_username': row['username'],
+                'author_username': row['author_username'],
                 'image_url': row['image_url'],
                 'publication_date': row['publication_date'],
                 'title': row['title'],
-                'category_label': row['label']
+                'category_label': row['category_label']
             }
             homepage_content.append(subscription_data)
 
+        if len(homepage_content) == 0:
+            homepage_content = {
+                    'message': "Subscribe to authors to curate your personal homepage"
+                }
+
+        
     return homepage_content
-
-
 
 def create_subscription(new_subscription):
     """Adds a tag to the database"""
