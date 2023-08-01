@@ -82,6 +82,7 @@ CREATE TABLE "PostTags" (
   FOREIGN KEY(`tag_id`) REFERENCES `Tags`(`id`)
 );
 
+
 CREATE TABLE "Categories" (
   "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   "label" varchar
@@ -164,6 +165,8 @@ INSERT INTO "Comments" VALUES (null, 2, 2, "this sucks ass!");
 INSERT INTO "Comments" VALUES (null, 3, 3, "severely lacking Kenergy");
 INSERT INTO "Comments" VALUES (null, 1, 4, "so good I wanted to cry");
 INSERT INTO "Comments" VALUES (null, 2, 7, "can't");
+
+INSERT INTO "PostTags" VALUES (null, 2, 1);
 
 DELETE FROM Subscriptions WHERE id = 14;
 
@@ -322,4 +325,16 @@ FROM Categories ct;
   FROM PostTags pt 
   Join Posts p, Tags t
   On pt.post_id = p.id AND pt.tag_id = t.id
-  WHERE t.id = 2
+  WHERE t.id = 3
+
+          SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved          
+        FROM Posts p
+        ORDER BY p.publication_date DESC

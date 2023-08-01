@@ -1,7 +1,7 @@
 import sqlite3
 import json
 from datetime import datetime
-from models import Post
+from models import Post, Tag, PostTag
 
 def get_all_posts():
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -20,7 +20,7 @@ def get_all_posts():
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved
+            p.approved          
         FROM Posts p
         ORDER BY p.publication_date DESC
         """)
@@ -273,7 +273,10 @@ def get_posts_by_tag(tag_id):
                         row['category_id'], row['title'], 
                         row['publication_date'],row['image_url'], 
                         row['content'], row['approved'])
+            tag = Tag(row['tag_id'], row['label'])
 
+            post.tag = tag.__dict__
+    
             posts.append(post.__dict__)
     # Return the list of animals at the specified location as dictionaries
     return posts

@@ -7,10 +7,11 @@ get_all_subscriptions,
 get_all_reactions,
 get_all_posts, get_single_post, get_posts_by_category, get_posts_by_title, get_posts_by_tag, create_post,
 get_all_post_reactions,
-get_all_comments,
+get_all_comments, get_comments_by_post, create_comment,
 get_all_categories,
 get_all_post_tags, get_posts_by_user, create_category, delete_post, update_post,
-create_subscription, create_multiple_post_tags, get_single_subscription, get_homepage_content)
+create_subscription, create_multiple_post_tags,
+delete_multiple_post_tags, get_post_tags_for_single_post, get_single_subscription, get_homepage_content)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -128,7 +129,20 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = get_posts_by_title(query['title'][0])
                 elif query.get('tag'):
                     response = get_posts_by_tag(query['tag'][0])
-                
+            if resource == 'comments':
+                if query.get('post_id'):
+                    response = get_comments_by_post(query['post_id'][0])
+
+            if resource == 'post_tags':
+                if query.get('post'):
+                    response = get_post_tags_for_single_post(query['post'][0])
+                    
+            # ( resource, key, value ) = parsed
+            # if resource == 'posts':
+            #     if key == 'user':
+            #         response = get_posts_by_user(value)
+            #     if key == "category":
+            #         response = get_posts_by_category(value)
 
         self._set_headers(200)
         self.wfile.write(json.dumps(response).encode())
@@ -167,6 +181,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                     })
         elif resource == 'subscriptions':
             response = create_subscription(post_body)
+        elif resource == 'comments':
+            response = create_comment(post_body)
 
         self._set_headers(status_code)
 
@@ -195,13 +211,35 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
-        self._set_headers(204)
+        delete_body = None
+        content_len = int(self.headers.get('content-length', 0))
+        if content_len > 0:
+            delete_body = json.loads(self.rfile.read(content_len))
+
+        status_code = 204
+        response = ""
         (resource, id) = self.parse_url(self.path)
 
         if resource == "posts":
             delete_post(id)
+        if resource == "post_tags+bulk_delete":
+            if (
+                delete_body is not None
+                and isinstance(delete_body, list)
+                and len(delete_body) > 0
+                and isinstance(delete_body[0], int)
+            ):
+                delete_multiple_post_tags(delete_body)
+            else:
+                status_code = 400
+                response = json.dumps({
+                    "error - bad request": """To  perform a bulk delete operation of post_tags, 
+                    please provide an array of the primary keys you would like to delete""",
+                    "example": [8, 9, 10]
+                    })
 
-        self.wfile.write("".encode())
+        self._set_headers(status_code)
+        self.wfile.write(response.encode())
 
 def main():
     """Starts the server on port 8088 using the HandleRequests class
