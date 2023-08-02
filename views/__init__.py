@@ -2,7 +2,7 @@ from .users_request import create_user, login_user, get_all_users, get_single_us
 
 from .tags_request import get_all_tags, create_tag
 
-from .subscriptions_request import get_all_subscriptions, create_subscription, get_single_subscription, get_homepage_content
+from .subscriptions_request import get_all_subscriptions, create_subscription, get_single_subscription, get_homepage_content, delete_subscription
 
 from .reactions_request import get_all_reactions
 
